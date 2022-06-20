@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fooderlich/models/explore_recipe.dart';
 
-import 'card1.dart';
-import 'card2.dart';
-import 'card3.dart';
+import '../components/components.dart';
+import '../models/models.dart';
 
 class TodayRecipeListView extends StatelessWidget {
   final List<ExploreRecipe> recipes;
@@ -25,7 +23,7 @@ class TodayRecipeListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Recipes of the Day!',
+            'Recipes of the Day 🍳',
             style: Theme.of(context).textTheme.headline1,
           ),
           const SizedBox(height: 16),

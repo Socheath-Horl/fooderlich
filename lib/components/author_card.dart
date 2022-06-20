@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'circle_image.dart';
+import './circle_image.dart';
 import '../fooderlich_theme.dart';
 
 class AuthorCard extends StatefulWidget {
+  final String authorName;
+  final String title;
+  final ImageProvider? imageProvider;
+
   const AuthorCard({
     Key? key,
     required this.authorName,
     required this.title,
     this.imageProvider,
   }) : super(key: key);
-
-  final String authorName;
-  final String title;
-  final ImageProvider? imageProvider;
 
   @override
   State<AuthorCard> createState() => _AuthorCardState();

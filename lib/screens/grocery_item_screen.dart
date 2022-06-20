@@ -1,22 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:fooderlich/components/grocery_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
+import '../components/grocery_tile.dart';
 import '../models/models.dart';
 
 class GroceryItemScreen extends StatefulWidget {
   final Function(GroceryItem) onCreate;
-  final Function(GroceryItem) onUpdate;
+  final Function(GroceryItem, int) onUpdate;
   final GroceryItem? orignialItem;
+  final int index;
   final bool isUpdating;
+
+  static MaterialPage page({
+    GroceryItem? item,
+    int index = -1,
+    required Function(GroceryItem) onCreate,
+    required Function(GroceryItem, int) onUpdate,
+  }) {
+    return MaterialPage(
+      name: FooderlichPages.groceryItemDetails,
+      key: ValueKey(FooderlichPages.groceryItemDetails),
+      child: GroceryItemScreen(
+        orignialItem: item,
+        index: index,
+        onCreate: onCreate,
+        onUpdate: onUpdate,
+      ),
+    );
+  }
+
   const GroceryItemScreen({
     Key? key,
     required this.onCreate,
     required this.onUpdate,
     this.orignialItem,
+    this.index = -1,
   })  : isUpdating = (orignialItem != null),
         super(key: key);
 
@@ -35,6 +56,7 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
 
   @override
   void initState() {
+    super.initState();
     final originalItem = widget.orignialItem;
     if (originalItem != null) {
       _nameController.text = originalItem.name;
@@ -52,8 +74,6 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
         _name = _nameController.text;
       });
     });
-
-    super.initState();
   }
 
   @override
@@ -85,7 +105,10 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
                 ),
               );
               if (widget.isUpdating) {
-                widget.onUpdate(groceryItem);
+                widget.onUpdate(
+                  groceryItem,
+                  widget.index,
+                );
               } else {
                 widget.onCreate(groceryItem);
               }
@@ -103,16 +126,14 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
         child: ListView(
           children: [
             buildNameField(),
-            const SizedBox(height: 10.0),
             buildImportanceField(),
-            const SizedBox(height: 10.0),
             buildDateField(context),
-            const SizedBox(height: 10.0),
             buildTimeField(context),
             const SizedBox(height: 10.0),
             buildColorPicker(context),
             const SizedBox(height: 10.0),
             buildQuantityField(),
+            const SizedBox(height: 16.0),
             GroceryTile(
               item: GroceryItem(
                 id: 'previewMode',

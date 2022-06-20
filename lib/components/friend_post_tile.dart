@@ -29,7 +29,7 @@ class FriendPostTile extends StatelessWidget {
               Text(post.comment),
               Text(
                 '${post.timestamp} mins ago',
-                style: const TextStyle(fontWeight: FontWeight.w700),
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ],
           ),
