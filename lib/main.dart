@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'fooderlich_theme.dart';
-import 'home.dart';
+import './models/models.dart';
+import './fooderlich_theme.dart';
+import './home.dart';
 
 void main() {
   runApp(const FooderlichApp());
@@ -17,7 +19,13 @@ class FooderlichApp extends StatelessWidget {
     return MaterialApp(
       theme: theme,
       title: 'Fooderlich',
-      home: const Home(),
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => TabManager()),
+          ChangeNotifierProvider(create: (context) => GroceryManager()),
+        ],
+        child: const Home(),
+      ),
     );
   }
 }
