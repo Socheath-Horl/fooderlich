@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../components/circle_image.dart';
-import '../models/models.dart';
+import '../models/app_state_manager.dart';
+import '../models/fooderlich_pages.dart';
+import '../models/profile_manager.dart';
+import '../models/user.dart';
 
 class ProfileScreen extends StatefulWidget {
   static MaterialPage page(User user) {

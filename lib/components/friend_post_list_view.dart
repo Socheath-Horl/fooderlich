@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './components.dart';
-import '../models/models.dart';
+import '../models/post.dart';
+import './friend_post_tile.dart';
 
 class FriendPostListView extends StatelessWidget {
   final List<Post> friendPosts;

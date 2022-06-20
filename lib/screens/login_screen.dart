@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fooderlich/models/fooderlich_pages.dart';
-import 'package:fooderlich/models/models.dart';
 import 'package:provider/provider.dart';
+
+import '../models/app_state_manager.dart';
+import '../models/fooderlich_pages.dart';
 
 class LoginScreen extends StatelessWidget {
   static MaterialPage page() {

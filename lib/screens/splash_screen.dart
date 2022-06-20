@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fooderlich/models/models.dart';
 import 'package:provider/provider.dart';
+
+import '../models/app_state_manager.dart';
+import '../models/fooderlich_pages.dart';
 
 class SplashScreen extends StatefulWidget {
   static MaterialPage page() {

@@ -1,4 +1,5 @@
-import 'models.dart';
+import './explore_recipe.dart';
+import './post.dart';
 
 class ExploreData {
   final List<ExploreRecipe> todayRecipes;

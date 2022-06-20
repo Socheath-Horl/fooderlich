@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../api/mock_fooderlich_service.dart';
-import '../components/components.dart';
-import '../models/models.dart';
+import '../components/friend_post_list_view.dart';
+import '../components/today_recipe_list_view.dart';
+import '../models/explore_data.dart';
 
 class ExploreScreen extends StatelessWidget {
   final mockService = MockFooderlichService();

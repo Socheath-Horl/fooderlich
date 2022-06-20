@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
-import '../models/models.dart';
+import '../models/explore_data.dart';
+import '../models/explore_recipe.dart';
+import '../models/post.dart';
+import '../models/simple_recipe.dart';
 
 // Mock recipe service that grabs sample json data to mock recipe request/response
 class MockFooderlichService {

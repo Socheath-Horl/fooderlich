@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../components/components.dart';
-import '../models/models.dart';
+import '../models/explore_recipe.dart';
+import './card1.dart';
+import './card2.dart';
+import './card3.dart';
 
 class TodayRecipeListView extends StatelessWidget {
   final List<ExploreRecipe> recipes;

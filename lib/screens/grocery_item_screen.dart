@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import '../components/grocery_tile.dart';
-import '../models/models.dart';
+import '../models/fooderlich_pages.dart';
+import '../models/grocery_item.dart';
 
 class GroceryItemScreen extends StatefulWidget {
   final Function(GroceryItem) onCreate;
