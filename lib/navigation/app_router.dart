@@ -11,8 +11,9 @@ import '../screens/onboarding_screen.dart';
 import '../screens/splash_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/webview_screen.dart';
+import './app_link.dart';
 
-class AppRouter extends RouterDelegate
+class AppRouter extends RouterDelegate<AppLink>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   @override
   final GlobalKey<NavigatorState> navigatorKey;
@@ -44,33 +45,34 @@ class AppRouter extends RouterDelegate
       key: navigatorKey,
       onPopPage: _handlePopPage,
       pages: [
-        if (!appStateMananger.isInitialized) SplashScreen.page(),
-        if (appStateMananger.isInitialized && !appStateMananger.isLoggedIn)
+        if (!appStateMananger.isInitialized) ...[
+          SplashScreen.page(),
+        ] else if (!appStateMananger.isLoggedIn) ...[
           LoginScreen.page(),
-        if (appStateMananger.isLoggedIn &&
-            !appStateMananger.isOnboardingComplete)
+        ] else if (!appStateMananger.isOnboardingComplete) ...[
           OnboardingScreen.page(),
-        if (appStateMananger.isOnboardingComplete)
+        ] else ...[
           Home.page(appStateMananger.getSelectedTab),
-        if (groceryManager.isCreatingNewItem)
-          GroceryItemScreen.page(
-            onCreate: (item) {
-              groceryManager.addItem(item);
-            },
-            onUpdate: (item, index) {},
-          ),
-        if (groceryManager.selectedIndex != -1)
-          GroceryItemScreen.page(
-            item: groceryManager.selectedGroceryItem,
-            index: groceryManager.selectedIndex,
-            onUpdate: (item, index) {
-              groceryManager.updateItem(item, index);
-            },
-            onCreate: (_) {},
-          ),
-        if (profileManager.didSelectUser)
-          ProfileScreen.page(profileManager.getUser),
-        if (profileManager.didTapOnRaywnderlich) WebViewScreen.page(),
+          if (groceryManager.isCreatingNewItem)
+            GroceryItemScreen.page(
+              onCreate: (item) {
+                groceryManager.addItem(item);
+              },
+              onUpdate: (item, index) {},
+            ),
+          if (groceryManager.selectedIndex != -1)
+            GroceryItemScreen.page(
+              item: groceryManager.selectedGroceryItem,
+              index: groceryManager.selectedIndex,
+              onUpdate: (item, index) {
+                groceryManager.updateItem(item, index);
+              },
+              onCreate: (_) {},
+            ),
+          if (profileManager.didSelectUser)
+            ProfileScreen.page(profileManager.getUser),
+          if (profileManager.didTapOnRaywnderlich) WebViewScreen.page(),
+        ],
       ],
     );
   }
@@ -94,6 +96,51 @@ class AppRouter extends RouterDelegate
     return true;
   }
 
+  AppLink getCurrentPath() {
+    if (!appStateMananger.isLoggedIn) {
+      return AppLink(location: AppLink.kLoginPath);
+    } else if (!appStateMananger.isOnboardingComplete) {
+      return AppLink(location: AppLink.kOnboardingPath);
+    } else if (profileManager.didSelectUser) {
+      return AppLink(location: AppLink.kProfilePath);
+    } else if (groceryManager.isCreatingNewItem) {
+      return AppLink(location: AppLink.kItemPath);
+    } else if (groceryManager.selectedGroceryItem != null) {
+      final id = groceryManager.selectedGroceryItem?.id;
+      return AppLink(location: AppLink.kItemPath, itemId: id);
+    } else {
+      return AppLink(
+        location: AppLink.kHomePath,
+        currentTab: appStateMananger.getSelectedTab,
+      );
+    }
+  }
+
   @override
-  Future<void> setNewRoutePath(configuration) async => null;
+  AppLink get currentConfiguration => getCurrentPath();
+
+  @override
+  Future<void> setNewRoutePath(AppLink newLink) async {
+    switch (newLink.location) {
+      case AppLink.kProfilePath:
+        profileManager.tapOnProfile(true);
+        break;
+      case AppLink.kItemPath:
+        final itemId = newLink.itemId;
+        if (itemId != null) {
+          groceryManager.setSelectedGroceryItem(itemId);
+        } else {
+          groceryManager.createNewItem();
+        }
+        profileManager.tapOnProfile(false);
+        break;
+      case AppLink.kHomePath:
+        appStateMananger.goToTab(newLink.currentTab ?? 0);
+        profileManager.tapOnProfile(false);
+        groceryManager.groceryItemTapped(-1);
+        break;
+      default:
+        break;
+    }
+  }
 }
